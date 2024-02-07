@@ -4,6 +4,30 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>SharpControls.SimpleAuth</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>SharpControls.SimpleAuth</PackageId>
+    <Title>SharpControls.SimpleAuth</Title>
+    <Version>1.0.0</Version>
+    <Authors>daRedLoCo</Authors>
+    <Company>Helvetitec Technologies Ltda</Company>
+    <Product>SharpControls.SimpleAuth</Product>
+    <Description>(Very) simple authentication framework for your C# application based on a REST API </Description>
+    <Copyright>© Helvetitec Technologies Ltda 2024</Copyright>
+    <PackageProjectUrl>https://github.com/sharpcontrols/SimpleAuth</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
