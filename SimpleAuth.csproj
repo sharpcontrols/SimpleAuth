@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>SharpControls.SimpleAuth</PackageId>
     <Title>SharpControls.SimpleAuth</Title>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>daRedLoCo</Authors>
     <Company>Helvetitec Technologies Ltda</Company>
     <Product>SharpControls.SimpleAuth</Product>
@@ -17,7 +17,12 @@
     <PackageProjectUrl>https://github.com/sharpcontrols/SimpleAuth</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReleaseNotes>* Replaced IAuthenticated interface with User model</PackageReleaseNotes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpControls.APIHandler" Version="1.0.4" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="LICENSE">
