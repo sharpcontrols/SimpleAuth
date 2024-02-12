@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,20 +10,23 @@ namespace SharpControls.SimpleAuth.Models
 {
     public class User
     {
-        public string Name { get; set; } = "User";
+        public static string ApiHost { get; set; } = "";
+        public static string AdminRank { get; set; } = "admin";
+        public string Name { get; set; } = "Guest";
         public string Token { get; set; } = "";
 
         public string[] Ranks { get; private set; } = [];
         public string[] AllowedActions { get; private set; } = [];
         public bool Authenticated { get; private set; } = false;
+        public event EventHandler? AuthenticatedChanged;
 
         /// <summary>
         /// Login as Guest
         /// </summary>
         public User()
         {
-            Ranks = ["guest"];
             Authenticated = true;
+            AuthenticatedChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -40,9 +45,45 @@ namespace SharpControls.SimpleAuth.Models
             Login(name, password);
         }
 
-        private void Login(string name, string password)
+        private async void Login(string name, string password)
         {
-            
+            Dictionary<string, string> headers = [];
+            headers.Add("Accept", "application/json");
+            var connection = new APIHandler.REST.RestConnection(headers, ApiHost);
+            var content = new APIHandler.RequestContent();
+            content.AddNode("name", name);
+            content.AddNode("password", password);
+            var response = await connection.SendPost("login", content);
+            var loginStatus = response.Value<string>("status");
+            if (loginStatus == "ok")
+            {
+                Name = name;
+                Ranks = response.Value<string[]>("ranks") ?? ([]);
+                AllowedActions = response.Value<string[]>("allowed_actions") ?? ([]);
+                Token = response.Value<string>("token") ?? "";
+                Authenticated = true;
+                AuthenticatedChanged?.Invoke(this, new EventArgs());
+            }
+            else if(loginStatus == "wrong_credentials")
+            {
+                Authenticated = false;
+                AuthenticatedChanged?.Invoke(this, new EventArgs());
+            }
+            else if(loginStatus == "error")
+            {
+                var loginStatusText = response.Value<string>("statusText") ?? "";
+                throw new Exception("Server Error: " + loginStatusText);
+            }
+        }
+
+        public bool IsGuest()
+        {
+            return Ranks.Length == 0;
+        }
+
+        public bool IsAdmin()
+        {
+            return Ranks.Contains(AdminRank);
         }
 
         public void SetAuthenticated(bool authenticated)
