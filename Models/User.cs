@@ -12,6 +12,7 @@ namespace SharpControls.SimpleAuth.Models
     {
         public static string ApiHost { get; set; } = "";
         public static string AdminRank { get; set; } = "admin";
+
         public string Name { get; set; } = "Guest";
         public string Token { get; set; } = "";
 
@@ -43,6 +44,11 @@ namespace SharpControls.SimpleAuth.Models
                 throw new NotImplementedException("Encryption not implemented, implement it yourself!");
             }
             Login(name, password);
+        }
+
+        public static void SetAppToken(string appToken)
+        {
+            APIHandler.REST.RestConnection.SetAppToken(appToken);
         }
 
         private async void Login(string name, string password)
